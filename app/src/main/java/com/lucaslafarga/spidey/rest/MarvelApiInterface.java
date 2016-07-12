@@ -1,6 +1,6 @@
 package com.lucaslafarga.spidey.rest;
 
-import com.lucaslafarga.spidey.models.GetAllComicsResponse;
+import com.lucaslafarga.spidey.models.ComicDataWrapper;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -10,7 +10,7 @@ import rx.Observable;
 public interface MarvelApiInterface {
 
     @GET("/v1/public/characters/{characterId}/comics")
-    Observable<GetAllComicsResponse> getMarvelComicsData (
+    Observable<ComicDataWrapper> getMarvelComicsData (
             @Path("characterId") String characterId,
             @Query("ts") String timestamp,
             @Query("apikey") String api_key,

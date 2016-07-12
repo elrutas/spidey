@@ -1,4 +1,4 @@
-package com.lucaslafarga.spidey.Utils;
+package com.lucaslafarga.spidey.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

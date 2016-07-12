@@ -3,7 +3,7 @@ package com.lucaslafarga.spidey.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GetAllComicsResponse {
+public class ComicDataWrapper {
 
     @SerializedName("code")
     @Expose
@@ -22,7 +22,7 @@ public class GetAllComicsResponse {
     public String attributionHTML;
     @SerializedName("data")
     @Expose
-    public GetAllComicsData data;
+    public ComicDataContainer data;
     @SerializedName("etag")
     @Expose
     public String etag;

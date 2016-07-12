@@ -5,8 +5,8 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lucaslafarga.spidey.R;
-import com.lucaslafarga.spidey.Utils.CreateHash;
-import com.lucaslafarga.spidey.models.GetAllComicsResponse;
+import com.lucaslafarga.spidey.utils.CreateHash;
+import com.lucaslafarga.spidey.models.ComicDataWrapper;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -56,9 +56,9 @@ public class MarvelApi {
         apiService = mRetrofit.create(MarvelApiInterface.class);
     }
 
-    public Observable<GetAllComicsResponse> getComicsResponseData() {
+    public Observable<ComicDataWrapper> getComicsResponseData() {
 
-        Observable<GetAllComicsResponse> observable;
+        Observable<ComicDataWrapper> observable;
 
         observable = apiService.getMarvelComicsData(SPIDEY, String.valueOf(mTimestamp), mApiPublicKey, mHash);
 

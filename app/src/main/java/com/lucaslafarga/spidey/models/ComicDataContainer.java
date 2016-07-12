@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GetAllComicsData {
+public class ComicDataContainer {
 
     @SerializedName("offset")
     @Expose
