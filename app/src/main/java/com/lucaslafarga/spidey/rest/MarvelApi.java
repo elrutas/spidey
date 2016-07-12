@@ -19,6 +19,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MarvelApi {
+    private static final String CAPTAIN_AMERICA = "1009220";
+    private static final String SPIDEY = "1009610";
+
 
     private final Retrofit mRetrofit;
     private final String mApiPrivateKey;
@@ -57,7 +60,7 @@ public class MarvelApi {
 
         Observable<GetAllComicsResponse> observable;
 
-        observable = apiService.getMarvelComicsData("1009220", String.valueOf(mTimestamp), mApiPublicKey, mHash);
+        observable = apiService.getMarvelComicsData(SPIDEY, String.valueOf(mTimestamp), mApiPublicKey, mHash);
 
         return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
