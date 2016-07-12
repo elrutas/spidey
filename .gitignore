@@ -17,3 +17,6 @@ captures/
 # Gradle files
 .gradle
 build/
+
+# Api config
+config.xml
