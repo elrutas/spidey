@@ -46,6 +46,12 @@ public class DetailActivity extends AppCompatActivity {
             Glide.with(this)
                 .load(image.path + "." + image.extension)
                 .centerCrop()
+                .error(R.drawable.no_image_available)
+                .into(viewBinding.detailImage);
+        } else {
+            Glide.with(this)
+                .load(R.drawable.no_image_available)
+                .fitCenter()
                 .into(viewBinding.detailImage);
         }
     }
