@@ -27,7 +27,7 @@ public class ComicListAdapter extends RecyclerView.Adapter<ComicListAdapter.View
 
     public void addComics(List<Comic> list) {
         comicList.addAll(list);
-        notifyDataSetChanged();
+        notifyItemInserted(comicList.size() - list.size());
     }
 
     @Override
