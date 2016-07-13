@@ -11,16 +11,16 @@ public class ComicDataContainer {
 
     @SerializedName("offset")
     @Expose
-    public String offset;
+    public int offset;
     @SerializedName("limit")
     @Expose
-    public String limit;
+    public int limit;
     @SerializedName("total")
     @Expose
-    public String total;
+    public int total;
     @SerializedName("count")
     @Expose
-    public String count;
+    public int count;
     @SerializedName("results")
     @Expose
     public List<Comic> comicList = new ArrayList<>();
