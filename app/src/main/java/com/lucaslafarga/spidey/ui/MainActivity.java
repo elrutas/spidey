@@ -1,10 +1,13 @@
-package com.lucaslafarga.spidey;
+package com.lucaslafarga.spidey.ui;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.lucaslafarga.spidey.R;
 import com.lucaslafarga.spidey.adapters.ComicListAdapter;
 import com.lucaslafarga.spidey.databinding.ActivityMainBinding;
 import com.lucaslafarga.spidey.models.Comic;
@@ -72,5 +75,9 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     @Override
     public void itemClicked(Comic comic) {
         Log.d(TAG, "Clicked on " + comic.title);
+        Gson gson = new Gson();
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.COMIC_KEY, gson.toJson(comic));
+        startActivity(intent);
     }
 }
