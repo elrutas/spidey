@@ -10,9 +10,10 @@ import rx.Observable;
 public interface MarvelApiInterface {
 
     @GET("/v1/public/characters/{characterId}/comics")
-    Observable<ComicDataWrapper> getMarvelComicsData (
+    Observable<ComicDataWrapper> getCharacterComicsData(
             @Path("characterId") String characterId,
             @Query("ts") String timestamp,
             @Query("apikey") String api_key,
-            @Query("hash") String md5Hash);
+            @Query("hash") String md5Hash,
+            @Query("limit") int limit);
 }
