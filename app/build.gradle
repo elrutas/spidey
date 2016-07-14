@@ -11,6 +11,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -46,4 +47,30 @@ dependencies {
     // RxAndroid
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
+
+    // Instrumentation test dependencies
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile 'com.android.support:support-annotations:23.4.0'
+    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+}
+
+/*
+ * Workaround for https://code.google.com/p/android/issues/detail?id=182715
+ *
+ * The Android Gradle plugin is creating DataBindingExportBuildInfoTasks for the instrumentation
+ * APK that generates from the app APKs layouts. This creates duplicate classes in the app and
+ * instrumentation APK which leads to
+ *      java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
+ * on older devices.
+ *
+ * The workaround is to get the DataBindingExportBuildInfoTasks tasks for the instrumentation APK
+ * and delete the files right after it creates them.
+ */
+tasks.withType(com.android.build.gradle.internal.tasks.databinding.DataBindingExportBuildInfoTask) { task ->
+    if (task.name.endsWith("AndroidTest")) {
+        task.finalizedBy(tasks.create("${task.name}Workaround") << {
+            task.output.deleteDir()
+        })
+    }
 }
