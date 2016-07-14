@@ -19,16 +19,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:padding="@dimen/activity_vertical_margin"
+
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/detail_title"
+                    android:transitionName="@string/tran_name_title"
                     android:textSize="22sp"
                     android:fontFamily="sans-serif-condensed"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:background="@color/red"/>
                 <TextView
                     android:id="@+id/detail_description"
+                    android:padding="@dimen/activity_vertical_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

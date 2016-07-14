@@ -53,7 +53,7 @@ public class ComicListAdapter extends RecyclerView.Adapter<ComicListAdapter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activityInterface.itemClicked(comicList.get(holder.getAdapterPosition()));
+                activityInterface.itemClicked(holder.itemView, comicList.get(holder.getAdapterPosition()));
             }
         });
     }
@@ -64,7 +64,7 @@ public class ComicListAdapter extends RecyclerView.Adapter<ComicListAdapter.View
     }
 
     public interface MainActivityInterface {
-        void itemClicked(Comic comic);
+        void itemClicked(View view, Comic comic);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

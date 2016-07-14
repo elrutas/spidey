@@ -2,9 +2,13 @@ package com.lucaslafarga.spidey.ui;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -118,12 +122,18 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     }
 
     @Override
-    public void itemClicked(Comic comic) {
+    public void itemClicked(View view, Comic comic) {
         Log.d(TAG, "Clicked on " + comic.title);
         Gson gson = new Gson();
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.COMIC_KEY, gson.toJson(comic));
-        startActivity(intent);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                new Pair<View, String>(view.findViewById(R.id.comic_title),
+                        getString(R.string.tran_name_title))
+        );
+        ActivityCompat.startActivity(this, intent, options.toBundle());
     }
 
     @Override

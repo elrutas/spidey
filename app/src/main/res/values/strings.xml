@@ -5,4 +5,8 @@
     <string name="no_title">No title available</string>
     <string name="no_description">No description available</string>
     <string name="no_comics">That\'s all the comics we have</string>
+
+    <!--transition names-->
+    <string name="tran_name_title">transition:TITLE</string>
+
 </resources>

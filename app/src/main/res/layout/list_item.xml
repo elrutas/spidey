@@ -25,6 +25,7 @@
                 android:layout_height="@dimen/card_thumbnail_height"/>
             <TextView
                 android:id="@+id/comic_title"
+                android:transitionName="@string/tran_name_title"
                 android:layout_width="@dimen/card_width"
                 android:layout_height="60dp"
                 android:paddingLeft="2dp"
