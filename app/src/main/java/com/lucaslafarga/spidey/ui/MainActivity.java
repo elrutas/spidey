@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
                     public void onError(Throwable e) {
                         Log.e(TAG, "Error:" + e.getMessage());
                         e.printStackTrace();
+                        // Aggressively try again if getting data failed
                         loadMoreDataFromApi(offset);
                     }
 
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
                     public void onNext(ComicDataWrapper comicDataWrapper) {
                         Log.d(TAG, "Load more data received");
                         addToAdapter(comicDataWrapper.data.comicList);
-                        marvelApi.addToCache(comicDataWrapper.data.comicList);
                         comicTotalCount = comicDataWrapper.data.total;
                     }
                 });

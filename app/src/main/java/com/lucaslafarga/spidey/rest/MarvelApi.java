@@ -19,6 +19,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MarvelApi {
@@ -63,12 +64,20 @@ public class MarvelApi {
         Observable<ComicDataWrapper> observable;
 
         observable = apiService.getCharacterComicsData(SPIDEY, String.valueOf(mTimestamp),
-                mApiPublicKey, mHash, RESULT_AMOUNT, offset);
+                mApiPublicKey, mHash, RESULT_AMOUNT, offset).map(new Func1<ComicDataWrapper, ComicDataWrapper>() {
+            @Override
+            public ComicDataWrapper call(ComicDataWrapper comicDataWrapper) {
+                addToCache(comicDataWrapper.data.comicList);
+                return comicDataWrapper;
+            }
+        });
 
-        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void addToCache(List<Comic> comics) {
+    private void addToCache(List<Comic> comics) {
         comicListCache.addAll(comics);
     }
 
