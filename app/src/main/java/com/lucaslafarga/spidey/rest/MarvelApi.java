@@ -56,11 +56,12 @@ public class MarvelApi {
         apiService = mRetrofit.create(MarvelApiInterface.class);
     }
 
-    public Observable<ComicDataWrapper> getComicsResponseData() {
+    public Observable<ComicDataWrapper> getComicsResponseData(int offset) {
 
         Observable<ComicDataWrapper> observable;
 
-        observable = apiService.getCharacterComicsData(SPIDEY, String.valueOf(mTimestamp), mApiPublicKey, mHash, RESULT_AMOUNT);
+        observable = apiService.getCharacterComicsData(SPIDEY, String.valueOf(mTimestamp),
+                mApiPublicKey, mHash, RESULT_AMOUNT, offset);
 
         return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }

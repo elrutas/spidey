@@ -4,4 +4,5 @@
     <!--detail activity-->
     <string name="no_title">No title available</string>
     <string name="no_description">No description available</string>
+    <string name="no_comics">That\'s all the comics we have</string>
 </resources>

@@ -5,10 +5,12 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucaslafarga.spidey.R;
 import com.lucaslafarga.spidey.adapters.ComicListAdapter;
+import com.lucaslafarga.spidey.adapters.EndlessRecyclerViewScrollListener;
 import com.lucaslafarga.spidey.databinding.ActivityMainBinding;
 import com.lucaslafarga.spidey.models.Comic;
 import com.lucaslafarga.spidey.models.ComicDataWrapper;
@@ -18,8 +20,9 @@ import com.lucaslafarga.spidey.widgets.AutofitGridRecyclerView;
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements ComicListAdapter.MainActivityInterface {
@@ -30,12 +33,27 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
     private List<Comic> comicList;
     private ComicListAdapter listAdapter;
+    private int comicTotalCount;
 
-    private Action1<? super ComicDataWrapper> listReceivedAction = new Action1<ComicDataWrapper>() {
+    private Subscription apiSubscription;
+
+    private Subscriber<ComicDataWrapper> firstCallSubscriber = new Subscriber<ComicDataWrapper>() {
         @Override
-        public void call (ComicDataWrapper comics) {
-            comicList = comics.data.comicList;
-            addToAdapter(comics.data.comicList);
+        public void onCompleted() {
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.e(TAG, "Error:" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onNext(ComicDataWrapper comicDataWrapper) {
+            comicList = comicDataWrapper.data.comicList;
+            comicTotalCount = comicDataWrapper.data.total;
+            addToAdapter(comicDataWrapper.data.comicList);
         }
     };
 
@@ -53,11 +71,11 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
         marvelApi = new MarvelApi(getApplicationContext());
 
-        Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData();
+        Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(0);
 
-        comicList.subscribeOn(Schedulers.newThread())
+        apiSubscription = comicList.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(listReceivedAction);
+                .subscribe(firstCallSubscriber);
     }
 
     private void setGridView() {
@@ -66,6 +84,53 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
         listAdapter = new ComicListAdapter(this);
         comicGridView.setAdapter(listAdapter);
+
+        viewBinding.comicGrid.addOnScrollListener(new EndlessRecyclerViewScrollListener(viewBinding.comicGrid.getManager()) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                Log.d(TAG, "Load more. Page:" + page + ", totalItem:" + totalItemsCount);
+                loadMoreDataFromApi(totalItemsCount);
+                Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(totalItemsCount);
+
+                comicList.subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(firstCallSubscriber);
+            }
+        });
+    }
+
+    private void loadMoreDataFromApi(final int offset) {
+        if (offset >= comicTotalCount) {
+            Log.i(TAG, "No more comics to load");
+            Toast.makeText(this, R.string.no_comics, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Log.d(TAG, "Load more data from:" + offset);
+        Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(offset);
+
+        apiSubscription = comicList.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ComicDataWrapper>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "Load more completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "Error:" + e.getMessage());
+                        e.printStackTrace();
+                        loadMoreDataFromApi(offset);
+                    }
+
+                    @Override
+                    public void onNext(ComicDataWrapper comicDataWrapper) {
+                        Log.d(TAG, "Load more data received");
+                        addToAdapter(comicDataWrapper.data.comicList);
+                        comicTotalCount = comicDataWrapper.data.total;
+                    }
+                });
     }
 
     private void addToAdapter(List<Comic> list) {
@@ -79,5 +144,13 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.COMIC_KEY, gson.toJson(comic));
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (apiSubscription != null) {
+            apiSubscription.unsubscribe();
+        }
     }
 }

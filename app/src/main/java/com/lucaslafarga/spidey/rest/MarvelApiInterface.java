@@ -15,5 +15,6 @@ public interface MarvelApiInterface {
             @Query("ts") String timestamp,
             @Query("apikey") String api_key,
             @Query("hash") String md5Hash,
-            @Query("limit") int limit);
+            @Query("limit") int limit,
+            @Query("offset") int offset);
 }
