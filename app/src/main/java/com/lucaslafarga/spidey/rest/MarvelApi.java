@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
 public class MarvelApi {
     private static final String CAPTAIN_AMERICA = "1009220";
     private static final String SPIDEY = "1009610";
-    private static final int RESULT_AMOUNT = 50;
+    private static final int RESULT_AMOUNT = 47;
 
     private final Retrofit mRetrofit;
     private final String mApiPrivateKey;
