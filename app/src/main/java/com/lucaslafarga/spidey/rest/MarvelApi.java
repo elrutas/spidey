@@ -5,10 +5,12 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lucaslafarga.spidey.R;
+import com.lucaslafarga.spidey.models.Comic;
 import com.lucaslafarga.spidey.utils.CreateHash;
 import com.lucaslafarga.spidey.models.ComicDataWrapper;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import retrofit2.Retrofit;
@@ -30,6 +32,7 @@ public class MarvelApi {
     private final MarvelApiInterface apiService;
     private final Long mTimestamp;
     private final String mHash;
+    private List<Comic> comicList;
 
     public MarvelApi(Context context) {
 
@@ -43,8 +46,6 @@ public class MarvelApi {
         mHash = CreateHash.md5(String.valueOf(mTimestamp)  + mApiPrivateKey + mApiPublicKey);
 
         GsonBuilder gBuilder = new GsonBuilder();
-        gBuilder.excludeFieldsWithoutExposeAnnotation();
-        gBuilder.disableHtmlEscaping();
         Gson gson = gBuilder.create();
 
         mRetrofit = new Retrofit.Builder()

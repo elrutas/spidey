@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lucaslafarga.spidey.R;
+import com.lucaslafarga.spidey.SpideyApp;
 import com.lucaslafarga.spidey.adapters.ComicListAdapter;
 import com.lucaslafarga.spidey.adapters.EndlessRecyclerViewScrollListener;
 import com.lucaslafarga.spidey.databinding.ActivityMainBinding;
@@ -19,6 +20,8 @@ import com.lucaslafarga.spidey.widgets.AutofitGridRecyclerView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -28,10 +31,11 @@ import rx.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity implements ComicListAdapter.MainActivityInterface {
     private static final String TAG = MainActivity.class.getName();
 
-    private MarvelApi marvelApi;
+    @Inject
+    MarvelApi marvelApi;
+
     private ActivityMainBinding viewBinding;
 
-    private List<Comic> comicList;
     private ComicListAdapter listAdapter;
     private int comicTotalCount;
 
@@ -51,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
         @Override
         public void onNext(ComicDataWrapper comicDataWrapper) {
-            comicList = comicDataWrapper.data.comicList;
             comicTotalCount = comicDataWrapper.data.total;
             addToAdapter(comicDataWrapper.data.comicList);
         }
@@ -60,16 +63,10 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((SpideyApp) getApplication()).getComponent().inject(this);
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setGridView();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        marvelApi = new MarvelApi(getApplicationContext());
 
         Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(0);
 
@@ -90,11 +87,6 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
             public void onLoadMore(int page, int totalItemsCount) {
                 Log.d(TAG, "Load more. Page:" + page + ", totalItem:" + totalItemsCount);
                 loadMoreDataFromApi(totalItemsCount);
-                Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(totalItemsCount);
-
-                comicList.subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(firstCallSubscriber);
             }
         });
     }
