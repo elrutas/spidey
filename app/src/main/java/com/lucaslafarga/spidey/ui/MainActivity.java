@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     private ActivityMainBinding viewBinding;
 
     private ComicListAdapter listAdapter;
-    private int comicTotalCount = -1;
 
     private Subscription apiSubscription;
 
@@ -78,12 +77,6 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     }
 
     private void loadMoreDataFromApi(final int offset) {
-        if (comicTotalCount != -1 && offset >= comicTotalCount) {
-            Log.i(TAG, "No more comics to load");
-            Toast.makeText(this, R.string.no_comics, Toast.LENGTH_LONG).show();
-            return;
-        }
-
         Log.d(TAG, "Load more data from:" + offset);
         Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(offset);
 
@@ -106,14 +99,22 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
                     @Override
                     public void onNext(ComicDataWrapper comicDataWrapper) {
                         Log.d(TAG, "Load more data received");
+                        if (comicDataWrapper.data.count == 0) {
+                            showNoMoreToast();
+                        }
+
                         addToAdapter(comicDataWrapper.data.comicList);
-                        comicTotalCount = comicDataWrapper.data.total;
                     }
                 });
     }
 
     private void addToAdapter(List<Comic> list) {
         listAdapter.addComics(list);
+    }
+
+    private void showNoMoreToast() {
+        Log.i(TAG, "No more comics to load");
+        Toast.makeText(this, R.string.no_comics, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -131,5 +132,6 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
         if (apiSubscription != null) {
             apiSubscription.unsubscribe();
         }
+
     }
 }
