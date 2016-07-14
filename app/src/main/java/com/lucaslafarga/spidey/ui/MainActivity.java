@@ -18,6 +18,7 @@ import com.lucaslafarga.spidey.models.ComicDataWrapper;
 import com.lucaslafarga.spidey.rest.MarvelApi;
 import com.lucaslafarga.spidey.widgets.AutofitGridRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,28 +38,9 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     private ActivityMainBinding viewBinding;
 
     private ComicListAdapter listAdapter;
-    private int comicTotalCount;
+    private int comicTotalCount = -1;
 
     private Subscription apiSubscription;
-
-    private Subscriber<ComicDataWrapper> firstCallSubscriber = new Subscriber<ComicDataWrapper>() {
-        @Override
-        public void onCompleted() {
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            Log.e(TAG, "Error:" + e.getMessage());
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onNext(ComicDataWrapper comicDataWrapper) {
-            comicTotalCount = comicDataWrapper.data.total;
-            addToAdapter(comicDataWrapper.data.comicList);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +50,15 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
         setGridView();
 
-        Observable<ComicDataWrapper> comicList = marvelApi.getComicsResponseData(0);
+        ArrayList<Comic> cachedComics = marvelApi.getCachedComics();
 
-        apiSubscription = comicList.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(firstCallSubscriber);
+        if(cachedComics.isEmpty()) {
+            Log.d(TAG, "Initial load from api");
+            loadMoreDataFromApi(0);
+        } else {
+            Log.d(TAG, "Loaded from cache");
+            addToAdapter(cachedComics);
+        }
     }
 
     private void setGridView() {
@@ -92,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     }
 
     private void loadMoreDataFromApi(final int offset) {
-        if (offset >= comicTotalCount) {
+        if (comicTotalCount != -1 && offset >= comicTotalCount) {
             Log.i(TAG, "No more comics to load");
             Toast.makeText(this, R.string.no_comics, Toast.LENGTH_LONG).show();
             return;
@@ -120,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
                     public void onNext(ComicDataWrapper comicDataWrapper) {
                         Log.d(TAG, "Load more data received");
                         addToAdapter(comicDataWrapper.data.comicList);
+                        marvelApi.addToCache(comicDataWrapper.data.comicList);
                         comicTotalCount = comicDataWrapper.data.total;
                     }
                 });

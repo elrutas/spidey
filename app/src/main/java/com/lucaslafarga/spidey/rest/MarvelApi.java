@@ -9,6 +9,7 @@ import com.lucaslafarga.spidey.models.Comic;
 import com.lucaslafarga.spidey.utils.CreateHash;
 import com.lucaslafarga.spidey.models.ComicDataWrapper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -32,7 +33,7 @@ public class MarvelApi {
     private final MarvelApiInterface apiService;
     private final Long mTimestamp;
     private final String mHash;
-    private List<Comic> comicList;
+    private ArrayList<Comic> comicListCache = new ArrayList<>();
 
     public MarvelApi(Context context) {
 
@@ -67,4 +68,11 @@ public class MarvelApi {
         return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public void addToCache(List<Comic> comics) {
+        comicListCache.addAll(comics);
+    }
+
+    public ArrayList<Comic> getCachedComics() {
+        return comicListCache;
+    }
 }
