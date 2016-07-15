@@ -19,4 +19,4 @@ captures/
 build/
 
 # Api config
-config.xml
+app/src/debug/res/values/config.xml

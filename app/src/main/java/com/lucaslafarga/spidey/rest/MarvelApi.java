@@ -40,6 +40,12 @@ public class MarvelApi {
 
         mApiPrivateKey = context.getString(R.string.private_key);
         mApiPublicKey = context.getString(R.string.public_key);
+
+        if (mApiPrivateKey.equalsIgnoreCase(context.getString(R.string.fake_key))
+            || mApiPublicKey.equalsIgnoreCase(context.getString(R.string.fake_key))) {
+            throw new RuntimeException("You must set a real key in config.xml");
+        }
+
         mBaseUrl = "http://gateway.marvel.com";
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

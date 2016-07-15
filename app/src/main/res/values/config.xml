@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="public_key">fake_key</string>
+    <string name="private_key">fake_key</string>
+</resources>

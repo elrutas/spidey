@@ -10,4 +10,5 @@
     <!--transition names-->
     <string name="tran_name_title">transition:TITLE</string>
 
+    <string name="fake_key">fake_key</string>
 </resources>
