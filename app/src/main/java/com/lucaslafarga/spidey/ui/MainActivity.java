@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     private ComicListAdapter listAdapter;
 
     private Subscription apiSubscription;
+    private int retryCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,21 +91,26 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "Load more completed");
+                        retryCount = 0;
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "Error:" + e.getMessage());
                         e.printStackTrace();
-                        // Aggressively try again if getting data failed
-                        loadMoreDataFromApi(offset);
+                        if(retryCount < 4) {
+                            retryCount++;
+                            loadMoreDataFromApi(offset);
+                        } else {
+                            showToast(R.string.error_loading);
+                        }
                     }
 
                     @Override
                     public void onNext(ComicDataWrapper comicDataWrapper) {
                         Log.d(TAG, "Load more data received");
                         if (comicDataWrapper.data.count == 0) {
-                            showNoMoreToast();
+                            showToast(R.string.no_comics);
                         }
 
                         addToAdapter(comicDataWrapper.data.comicList);
@@ -116,9 +122,8 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
         listAdapter.addComics(list);
     }
 
-    private void showNoMoreToast() {
-        Log.i(TAG, "No more comics to load");
-        Toast.makeText(this, R.string.no_comics, Toast.LENGTH_LONG).show();
+    private void showToast(int id) {
+        Toast.makeText(this, id, Toast.LENGTH_LONG).show();
     }
 
     @Override
