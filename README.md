@@ -17,10 +17,18 @@ Clone the project and set a real API key in [config.xml](../master/app/src/main/
 
 Screenshots
 -----------
-Coming soon
+![Phone portrait](/../master/screenshots/phone_portrait.png?raw=true "Phone portrait")
+![Phone detail](/../master/screenshots/phone_detail.png?raw=true "Phone detail")
+![Phone landscape](/../master/screenshots/phone_landscape.png?raw=true "Phone landscape")
+![Tablet portrait](/../master/screenshots/tablet_portrait.png?raw=true "Tablet portrait")
+![Tablet landscape](/../master/screenshots/tablet_lansdcape.png?raw=true "Tablet landscape")
 
 Limitations
 -----------
 The app is not network aware. It will blindly try to get data from the internet and stop after 3 consecutive failures.
+
+
 CardViews don't look good in SDKs below 21.
+
+
 If the app goes onPause while waiting for a request to complete, the request is lost and the app does not load more data.
