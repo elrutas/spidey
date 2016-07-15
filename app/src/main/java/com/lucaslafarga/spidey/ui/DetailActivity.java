@@ -1,8 +1,11 @@
 package com.lucaslafarga.spidey.ui;
 
+import android.annotation.TargetApi;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Fade;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -38,6 +41,16 @@ public class DetailActivity extends AppCompatActivity {
         viewBinding.detailDescription.setText(comic.description == null? getString(R.string.no_description) : comic.description);
 
         loadImage();
+
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            setupWindowAnimations();
+    }
+
+    @TargetApi(21)
+    private void setupWindowAnimations() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
     }
 
     private void loadImage() {
