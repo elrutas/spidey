@@ -29,6 +29,3 @@ The app is not network aware. It will blindly try to get data from the internet 
 
 
 CardViews don't look good in SDKs below 21.
-
-
-If the app goes onPause while waiting for a request to complete, the request is lost and the app does not load more data.
