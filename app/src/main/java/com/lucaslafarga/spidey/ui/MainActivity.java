@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         if (apiSubscription != null) {
             apiSubscription.unsubscribe();
         }
