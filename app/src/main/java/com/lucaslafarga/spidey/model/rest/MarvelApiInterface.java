@@ -1,6 +1,6 @@
-package com.lucaslafarga.spidey.rest;
+package com.lucaslafarga.spidey.model.rest;
 
-import com.lucaslafarga.spidey.models.ComicDataWrapper;
+import com.lucaslafarga.spidey.model.entities.ComicDataWrapper;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

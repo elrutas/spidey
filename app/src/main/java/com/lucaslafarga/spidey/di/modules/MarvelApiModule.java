@@ -1,6 +1,7 @@
-package com.lucaslafarga.spidey;
+package com.lucaslafarga.spidey.di.modules;
 
-import com.lucaslafarga.spidey.rest.MarvelApi;
+import com.lucaslafarga.spidey.SpideyApp;
+import com.lucaslafarga.spidey.model.rest.MarvelApi;
 
 import javax.inject.Singleton;
 

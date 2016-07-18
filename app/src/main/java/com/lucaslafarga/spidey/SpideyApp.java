@@ -2,6 +2,10 @@ package com.lucaslafarga.spidey;
 
 import android.app.Application;
 
+import com.lucaslafarga.spidey.di.components.ApplicationComponent;
+import com.lucaslafarga.spidey.di.components.DaggerApplicationComponent;
+import com.lucaslafarga.spidey.di.modules.MarvelApiModule;
+
 public class SpideyApp extends Application {
     ApplicationComponent component;
 

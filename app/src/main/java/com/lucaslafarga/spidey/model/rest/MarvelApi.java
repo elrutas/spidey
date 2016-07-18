@@ -1,13 +1,13 @@
-package com.lucaslafarga.spidey.rest;
+package com.lucaslafarga.spidey.model.rest;
 
 import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lucaslafarga.spidey.R;
-import com.lucaslafarga.spidey.models.Comic;
+import com.lucaslafarga.spidey.model.entities.Comic;
 import com.lucaslafarga.spidey.utils.CreateHash;
-import com.lucaslafarga.spidey.models.ComicDataWrapper;
+import com.lucaslafarga.spidey.model.entities.ComicDataWrapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -16,7 +16,7 @@ import com.lucaslafarga.spidey.R;
 import com.lucaslafarga.spidey.adapters.ComicListAdapter;
 import com.lucaslafarga.spidey.adapters.EndlessRecyclerViewScrollListener;
 import com.lucaslafarga.spidey.databinding.ActivityMainBinding;
-import com.lucaslafarga.spidey.models.Comic;
+import com.lucaslafarga.spidey.model.entities.Comic;
 import com.lucaslafarga.spidey.presenters.MainActivityPresenter;
 import com.lucaslafarga.spidey.widgets.AutofitGridRecyclerView;
 

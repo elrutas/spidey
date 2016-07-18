@@ -1,5 +1,6 @@
-package com.lucaslafarga.spidey;
+package com.lucaslafarga.spidey.di.components;
 
+import com.lucaslafarga.spidey.di.modules.MarvelApiModule;
 import com.lucaslafarga.spidey.presenters.MainActivityPresenter;
 
 import javax.inject.Singleton;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lucaslafarga.spidey.ui.MainActivity;
 import com.lucaslafarga.spidey.R;
-import com.lucaslafarga.spidey.models.Comic;
+import com.lucaslafarga.spidey.model.entities.Comic;
 
 import java.util.ArrayList;
 import java.util.List;

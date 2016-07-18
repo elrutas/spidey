@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lucaslafarga.spidey.R;
 import com.lucaslafarga.spidey.databinding.ActivityDetailBinding;
-import com.lucaslafarga.spidey.models.Comic;
-import com.lucaslafarga.spidey.models.ComicImage;
+import com.lucaslafarga.spidey.model.entities.Comic;
+import com.lucaslafarga.spidey.model.entities.ComicImage;
 
 import java.util.Random;
 

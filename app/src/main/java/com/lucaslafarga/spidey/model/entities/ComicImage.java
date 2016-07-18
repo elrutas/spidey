@@ -1,10 +1,9 @@
-package com.lucaslafarga.spidey.models;
+package com.lucaslafarga.spidey.model.entities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Thumbnail {
-
+public class ComicImage {
     @SerializedName("path")
     @Expose
     public String path;

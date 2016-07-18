@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.lucaslafarga.spidey.R;
 import com.lucaslafarga.spidey.SpideyApp;
-import com.lucaslafarga.spidey.models.Comic;
-import com.lucaslafarga.spidey.models.ComicDataWrapper;
-import com.lucaslafarga.spidey.rest.MarvelApi;
+import com.lucaslafarga.spidey.model.entities.Comic;
+import com.lucaslafarga.spidey.model.entities.ComicDataWrapper;
+import com.lucaslafarga.spidey.model.rest.MarvelApi;
 import com.lucaslafarga.spidey.ui.MainActivity;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class MainActivityPresenter {
 
     public MainActivityPresenter (MainActivity activity) {
         this.activity = activity;
-        ( (SpideyApp) activity.getApplication()).getComponent().inject(this);
+        ((SpideyApp) activity.getApplication()).getComponent().inject(this);
     }
 
     public void init() {

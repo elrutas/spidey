@@ -6,7 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.Gson;
 import com.lucaslafarga.spidey.R;
-import com.lucaslafarga.spidey.models.Comic;
+import com.lucaslafarga.spidey.model.entities.Comic;
 
 import org.junit.Rule;
 import org.junit.Test;
