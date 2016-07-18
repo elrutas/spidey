@@ -1,7 +1,6 @@
 package com.lucaslafarga.spidey;
 
-
-import com.lucaslafarga.spidey.ui.MainActivity;
+import com.lucaslafarga.spidey.presenters.MainActivityPresenter;
 
 import javax.inject.Singleton;
 
@@ -11,7 +10,7 @@ import dagger.Component;
 @Component(modules = {MarvelApiModule.class})
 public interface ApplicationComponent {
 
-    // allow to inject into MainActivity
+    // allow to inject into MainActivityPresenter
     // method name not important
-    void inject(MainActivity mainActivity);
+    void inject(MainActivityPresenter mainActivityPresenter);
 }
