@@ -16,11 +16,15 @@ import com.lucaslafarga.spidey.R;
 import com.lucaslafarga.spidey.adapters.ComicListAdapter;
 import com.lucaslafarga.spidey.adapters.EndlessRecyclerViewScrollListener;
 import com.lucaslafarga.spidey.databinding.ActivityMainBinding;
+import com.lucaslafarga.spidey.di.components.DaggerMainActivityComponent;
+import com.lucaslafarga.spidey.di.modules.MainActivityModule;
 import com.lucaslafarga.spidey.model.entities.Comic;
 import com.lucaslafarga.spidey.presenters.MainActivityPresenter;
 import com.lucaslafarga.spidey.widgets.AutofitGridRecyclerView;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements ComicListAdapter.MainActivityInterface {
     private static final String TAG = MainActivity.class.getName();
@@ -29,16 +33,24 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
     private ComicListAdapter listAdapter;
 
-    private MainActivityPresenter presenter;
+    @Inject
+    public MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
+        initializeInjector();
         setGridView();
-        presenter = new MainActivityPresenter(this);
+
         presenter.init();
+    }
+
+    private void initializeInjector() {
+        DaggerMainActivityComponent.builder()
+                .mainActivityModule(new MainActivityModule(this))
+                .build()
+                .inject(this);
     }
 
     private void setGridView() {
