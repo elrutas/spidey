@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements ComicListAdapter.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Make sure to set style again before calling super.onCreate
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initializeInjector();
