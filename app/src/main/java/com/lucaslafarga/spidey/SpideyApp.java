@@ -7,12 +7,10 @@ import com.lucaslafarga.spidey.di.components.DaggerApplicationComponent;
 import com.lucaslafarga.spidey.di.modules.MarvelApiModule;
 
 public class SpideyApp extends Application {
-    ApplicationComponent component;
+    private final ApplicationComponent component = createComponent();
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        component = DaggerApplicationComponent.builder()
+    protected ApplicationComponent createComponent() {
+        return DaggerApplicationComponent.builder()
                 .marvelApiModule(new MarvelApiModule(this))
                 .build();
     }
